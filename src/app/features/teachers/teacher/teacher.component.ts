@@ -1,88 +1,280 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Teacher, TeacherService } from '../../../core/services/teacher.service';
-import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { CreateTeacher, Teacher, TeacherService, UpdateTeacher } from '../../../core/services/teacher.service';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-teacher',
-  imports:[CommonModule, RouterModule, ReactiveFormsModule],
+  imports:[RouterModule, CommonModule, ReactiveFormsModule],
   templateUrl: './teacher.component.html',
   styleUrls: ['./teacher.component.scss']
 })
 export class TeacherComponent implements OnInit {
 
   teachers: Teacher[] = [];
+
   teacherForm!: FormGroup;
-  isEditMode = false;
-  selectedId: number | null = null;
+
+  selectedTeacherId: string | null = null;
+
+  loading = false;
+
+  submitted = false;
 
   constructor(
-    private teacherService: TeacherService,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private teacherService: TeacherService
+  ) { }
 
   ngOnInit(): void {
-    this.initForm();
+
+    this.initializeForm();
+
     this.loadTeachers();
+
   }
 
-  initForm() {
+  initializeForm(): void {
+
     this.teacherForm = this.fb.group({
-      fullName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
+
+      firstName: ['', Validators.required],
+
+      lastName: ['', Validators.required],
+
+      gender: [1, Validators.required],
+
+      dateOfBirth: ['', Validators.required],
+
       qualification: ['', Validators.required],
-      salary: [0, Validators.required]
+
+      experienceYears: [0, Validators.required],
+
+      phoneNumber: ['', Validators.required],
+
+      address: ['', Validators.required],
+
+      joiningDate: ['', Validators.required],
+
+      salary: [0, Validators.required],
+
+      userId: [null],
+
+      isActive: [true]
+
     });
+
   }
 
-  loadTeachers() {
-    this.teacherService.getAll().subscribe(res => {
-      this.teachers = res;
+  loadTeachers(): void {
+
+    this.loading = true;
+
+    this.teacherService.getAll().subscribe({
+
+      next: (response) => {
+
+        this.teachers = response;
+
+        this.loading = false;
+
+      },
+
+      error: (error) => {
+
+        console.error(error);
+
+        this.loading = false;
+
+      }
+
     });
+
   }
 
-  submit() {
-    const data = this.teacherForm.value;
+  saveTeacher(): void {
 
-    if (this.isEditMode && this.selectedId !== null) {
-      this.teacherService.update(this.selectedId, data).subscribe(() => {
-        this.reset();
-        this.loadTeachers();
-      });
-    } else {
-      this.teacherService.create(data).subscribe(() => {
-        this.reset();
-        this.loadTeachers();
-      });
+    this.submitted = true;
+
+    if (this.teacherForm.invalid) {
+      return;
     }
+
+    if (this.selectedTeacherId) {
+
+      const updateData: UpdateTeacher = {
+
+        firstName: this.teacherForm.value.firstName,
+
+        lastName: this.teacherForm.value.lastName,
+
+        phoneNumber: this.teacherForm.value.phoneNumber,
+
+        address: this.teacherForm.value.address,
+
+        experienceYears: this.teacherForm.value.experienceYears,
+
+        salary: this.teacherForm.value.salary,
+
+        isActive: this.teacherForm.value.isActive
+
+      };
+
+      this.teacherService
+        .update(this.selectedTeacherId, updateData)
+        .subscribe({
+
+          next: () => {
+
+            alert('Teacher updated successfully');
+
+            this.resetForm();
+
+            this.loadTeachers();
+
+          },
+
+          error: (error) => {
+
+            console.error(error);
+
+          }
+
+        });
+
+    } else {
+
+      const createData: CreateTeacher = {
+
+        firstName: this.teacherForm.value.firstName,
+
+        lastName: this.teacherForm.value.lastName,
+
+        gender: this.teacherForm.value.gender,
+
+        dateOfBirth: this.teacherForm.value.dateOfBirth,
+
+        qualification: this.teacherForm.value.qualification,
+
+        experienceYears: this.teacherForm.value.experienceYears,
+
+        phoneNumber: this.teacherForm.value.phoneNumber,
+
+        address: this.teacherForm.value.address,
+
+        joiningDate: this.teacherForm.value.joiningDate,
+
+        salary: this.teacherForm.value.salary,
+
+        userId: this.teacherForm.value.userId
+
+      };
+
+      this.teacherService
+        .create(createData)
+        .subscribe({
+
+          next: () => {
+
+            alert('Teacher created successfully');
+
+            this.resetForm();
+
+            this.loadTeachers();
+
+          },
+
+          error: (error) => {
+
+            console.error(error);
+
+          }
+
+        });
+
+    }
+
   }
 
-  edit(teacher: Teacher) {
-    this.isEditMode = true;
-    this.selectedId = teacher.id!;
+  editTeacher(teacher: Teacher): void {
+
+    this.selectedTeacherId = teacher.id!;
+
+    const names = teacher.fullName.split(' ');
 
     this.teacherForm.patchValue({
-      fullName: teacher.fullName,
-      email: teacher.email,
+
+      firstName: names[0],
+
+      lastName: names[1] || '',
+
       phoneNumber: teacher.phoneNumber,
+
       qualification: teacher.qualification,
-      salary: teacher.salary
+
+      experienceYears: teacher.experienceYears,
+
+      salary: teacher.salary,
+
+      isActive: teacher.isActive
+
     });
+
   }
 
-  delete(id: number) {
-    if (confirm('Are you sure you want to delete this teacher?')) {
-      this.teacherService.delete(id).subscribe(() => {
-        this.loadTeachers();
-      });
+  deleteTeacher(id: string): void {
+
+    if (!confirm('Are you sure to delete this teacher?')) {
+      return;
     }
+
+    this.teacherService.delete(id).subscribe({
+
+      next: () => {
+
+        alert('Teacher deleted successfully');
+
+        this.loadTeachers();
+
+      },
+
+      error: (error) => {
+
+        console.error(error);
+
+      }
+
+    });
+
   }
 
-  reset() {
-    this.teacherForm.reset();
-    this.isEditMode = false;
-    this.selectedId = null;
+  resetForm(): void {
+
+    this.submitted = false;
+
+    this.selectedTeacherId = null;
+
+    this.teacherForm.reset({
+
+      gender: 1,
+
+      experienceYears: 0,
+
+      salary: 0,
+
+      userId: null,
+
+      isActive: true
+
+    });
+
   }
+
 }

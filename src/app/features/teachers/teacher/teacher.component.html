@@ -1,69 +1,295 @@
-<div class="teacher-container">
+<div class="container-fluid teacher-page">
 
-  <!-- FORM -->
-  <div class="form-card">
+  <div class="row">
 
-    <h2>{{ isEditMode ? 'Update Teacher' : 'Add Teacher' }}</h2>
+    <div class="col-lg-4">
 
-    <form [formGroup]="teacherForm" (ngSubmit)="submit()">
+      <div class="card shadow-sm border-0">
 
-      <input type="text" placeholder="Full Name" formControlName="fullName">
+        <div class="card-header bg-primary text-white">
 
-      <input type="email" placeholder="Email" formControlName="email">
+          <h4 class="mb-0">
+            {{ selectedTeacherId ? 'Update Teacher' : 'Add Teacher' }}
+          </h4>
 
-      <input type="text" placeholder="Phone Number" formControlName="phoneNumber">
+        </div>
 
-      <input type="text" placeholder="Qualification" formControlName="qualification">
+        <div class="card-body">
 
-      <input type="number" placeholder="Salary" formControlName="salary">
+          <form [formGroup]="teacherForm">
 
-      <div class="buttons">
-        <button type="submit">
-          {{ isEditMode ? 'Update' : 'Save' }}
-        </button>
+            <div class="mb-3">
 
-        <button type="button" (click)="reset()">Reset</button>
+              <label class="form-label">First Name</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="firstName">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Last Name</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="lastName">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Gender</label>
+
+              <select
+                class="form-select"
+                formControlName="gender">
+
+                <option [value]="1">Male</option>
+
+                <option [value]="2">Female</option>
+
+                <option [value]="3">Other</option>
+
+              </select>
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Date Of Birth</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="dateOfBirth">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Qualification</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="qualification">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Experience Years</label>
+
+              <input
+                type="number"
+                class="form-control"
+                formControlName="experienceYears">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Phone Number</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="phoneNumber">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Address</label>
+
+              <textarea
+                rows="3"
+                class="form-control"
+                formControlName="address"></textarea>
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Joining Date</label>
+
+              <input
+                type="date"
+                class="form-control"
+                formControlName="joiningDate">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">Salary</label>
+
+              <input
+                type="number"
+                class="form-control"
+                formControlName="salary">
+
+            </div>
+
+            <div class="mb-3">
+
+              <label class="form-label">User Id</label>
+
+              <input
+                type="text"
+                class="form-control"
+                formControlName="userId">
+
+            </div>
+
+            <div class="form-check mb-3">
+
+              <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="isActive">
+
+              <label class="form-check-label">
+
+                Active
+
+              </label>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                (click)="saveTeacher()">
+
+                {{ selectedTeacherId ? 'Update' : 'Save' }}
+
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="resetForm()">
+
+                Reset
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
       </div>
 
-    </form>
+    </div>
 
-  </div>
+    <div class="col-lg-8">
 
-  <!-- TABLE -->
-  <div class="table-card">
+      <div class="card shadow-sm border-0">
 
-    <h2>Teachers List</h2>
+        <div class="card-header bg-dark text-white">
 
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Qualification</th>
-          <th>Salary</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+          <h4 class="mb-0">
+            Teachers List
+          </h4>
 
-      <tbody>
-        <tr *ngFor="let t of teachers">
+        </div>
 
-          <td>{{ t.fullName }}</td>
-          <td>{{ t.email }}</td>
-          <td>{{ t.phoneNumber }}</td>
-          <td>{{ t.qualification }}</td>
-          <td>{{ t.salary }}</td>
+        <div class="card-body table-responsive">
 
-          <td>
-            <button (click)="edit(t)">Edit</button>
-            <button (click)="delete(t.id!)">Delete</button>
-          </td>
+          <table class="table table-hover align-middle">
 
-        </tr>
-      </tbody>
+            <thead>
 
-    </table>
+              <tr>
+
+                <th>Name</th>
+
+                <th>Gender</th>
+
+                <th>Qualification</th>
+
+                <th>Experience</th>
+
+                <th>Phone</th>
+
+                <th>Salary</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let teacher of teachers">
+
+                <td>{{ teacher.fullName }}</td>
+
+                <td>{{ teacher.gender }}</td>
+
+                <td>{{ teacher.qualification }}</td>
+
+                <td>{{ teacher.experienceYears }}</td>
+
+                <td>{{ teacher.phoneNumber }}</td>
+
+                <td>{{ teacher.salary }}</td>
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [ngClass]="teacher.isActive ? 'bg-success' : 'bg-danger'">
+
+                    {{ teacher.isActive ? 'Active' : 'Inactive' }}
+
+                  </span>
+
+                </td>
+
+                <td>
+
+                  <button
+                    class="btn btn-sm btn-warning me-2"
+                    (click)="editTeacher(teacher)">
+
+                    Edit
+
+                  </button>
+
+                  <button
+                    class="btn btn-sm btn-danger"
+                    (click)="deleteTeacher(teacher.id!)">
+
+                    Delete
+
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
 
   </div>
 

@@ -18,6 +18,9 @@ export class TeacherService {
     private http: HttpClient
   ) { }
 
+  // =========================
+  // GET ALL TEACHERS
+  // =========================
   getAll(): Observable<Teacher[]> {
 
     return this.http.get<Teacher[]>(
@@ -26,7 +29,10 @@ export class TeacherService {
 
   }
 
-  getById(id: number): Observable<Teacher> {
+  // =========================
+  // GET TEACHER BY ID
+  // =========================
+  getById(id: string): Observable<Teacher> {
 
     return this.http.get<Teacher>(
       `${this.baseUrl}/${id}`
@@ -34,7 +40,10 @@ export class TeacherService {
 
   }
 
-  create(data: Teacher): Observable<any> {
+  // =========================
+  // CREATE TEACHER
+  // =========================
+  create(data: CreateTeacher): Observable<any> {
 
     return this.http.post(
       this.baseUrl,
@@ -43,9 +52,12 @@ export class TeacherService {
 
   }
 
+  // =========================
+  // UPDATE TEACHER
+  // =========================
   update(
-    id: number,
-    data: Teacher
+    id: string,
+    data: UpdateTeacher
   ): Observable<any> {
 
     return this.http.put(
@@ -55,7 +67,10 @@ export class TeacherService {
 
   }
 
-  delete(id: number): Observable<any> {
+  // =========================
+  // DELETE TEACHER
+  // =========================
+  delete(id: string): Observable<any> {
 
     return this.http.delete(
       `${this.baseUrl}/${id}`
@@ -65,18 +80,77 @@ export class TeacherService {
 
 }
 
+// ===================================
+// TEACHER RESPONSE MODEL
+// ===================================
 export interface Teacher {
 
-  id?: number;
+  id?: string;
 
   fullName: string;
 
-  email: string;
-
-  phoneNumber: string;
+  gender: string;
 
   qualification: string;
 
+  experienceYears: number;
+
+  phoneNumber: string;
+
   salary: number;
+
+  isActive: boolean;
+
+  tenantId?: string;
+
+}
+
+// ===================================
+// CREATE TEACHER DTO
+// ===================================
+export interface CreateTeacher {
+
+  firstName: string;
+
+  lastName: string;
+
+  gender: number;
+
+  dateOfBirth: Date;
+
+  qualification: string;
+
+  experienceYears: number;
+
+  phoneNumber: string;
+
+  address: string;
+
+  joiningDate: Date;
+
+  salary: number;
+
+  userId?: string | null;
+
+}
+
+// ===================================
+// UPDATE TEACHER DTO
+// ===================================
+export interface UpdateTeacher {
+
+  firstName: string;
+
+  lastName: string;
+
+  phoneNumber: string;
+
+  address: string;
+
+  experienceYears: number;
+
+  salary: number;
+
+  isActive: boolean;
 
 }
