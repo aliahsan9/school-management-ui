@@ -1,0 +1,43 @@
+.signup-page {
+    min-height: 100vh;
+    background: #f4f6f9;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.signup-card {
+    width: 100%;
+    max-width: 450px;
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+.subtitle {
+    color: gray;
+    margin-top: 5px;
+}
+
+.form-control {
+    height: 45px;
+    border-radius: 8px;
+}
+
+.btn {
+    height: 45px;
+    border-radius: 8px;
+    font-weight: 600;
+}

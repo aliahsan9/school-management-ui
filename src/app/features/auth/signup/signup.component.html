@@ -1,0 +1,122 @@
+<div class="signup-page">
+
+    <div class="signup-card">
+
+        <div class="text-center mb-4">
+
+            <h2 class="title">
+                School Management System
+            </h2>
+
+            <p class="subtitle">
+                Create Your School Account
+            </p>
+
+        </div>
+
+        <form [formGroup]="signupForm"
+              (ngSubmit)="onSubmit()">
+
+            <!-- School Name -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    School Name
+                </label>
+
+                <input type="text"
+                       class="form-control"
+                       formControlName="schoolName">
+
+                <small class="text-danger"
+                       *ngIf="signupForm.get('schoolName')?.touched &&
+                              signupForm.get('schoolName')?.invalid">
+
+                    School name is required
+
+                </small>
+
+            </div>
+
+            <!-- Admin Name -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Admin Name
+                </label>
+
+                <input type="text"
+                       class="form-control"
+                       formControlName="adminName">
+
+                <small class="text-danger"
+                       *ngIf="signupForm.get('adminName')?.touched &&
+                              signupForm.get('adminName')?.invalid">
+
+                    Admin name is required
+
+                </small>
+
+            </div>
+
+            <!-- Email -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Email
+                </label>
+
+                <input type="email"
+                       class="form-control"
+                       formControlName="email">
+
+                <small class="text-danger"
+                       *ngIf="signupForm.get('email')?.touched &&
+                              signupForm.get('email')?.invalid">
+
+                    Valid email is required
+
+                </small>
+
+            </div>
+
+            <!-- Password -->
+
+            <div class="mb-4">
+
+                <label class="form-label">
+                    Password
+                </label>
+
+                <input type="password"
+                       class="form-control"
+                       formControlName="password">
+
+                <small class="text-danger"
+                       *ngIf="signupForm.get('password')?.touched &&
+                              signupForm.get('password')?.invalid">
+
+                    Password must be at least 6 characters
+
+                </small>
+
+            </div>
+
+            <!-- Submit Button -->
+
+            <button type="submit"
+                    class="btn btn-primary w-100"
+                    [disabled]="loading">
+
+                {{ loading ? 'Creating Account...' : 'Sign Up' }}
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
