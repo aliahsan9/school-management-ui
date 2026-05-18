@@ -1,15 +1,92 @@
-<div class="layout">
+<div class="dashboard-layout">
 
-    <app-sidebar></app-sidebar>
+  <div class="main-wrapper">
 
-    <div class="main">
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="title">School ERP Dashboard</div>
 
-        <div class="content">
+      <div class="actions">
+        <button class="btn btn-sm btn-outline-primary" (click)="loadDashboard()">
+          Refresh Data
+        </button>
+      </div>
+    </div>
 
-            <router-outlet></router-outlet>
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- KPI CARDS -->
+      <div class="row g-4">
+
+        <div class="col-lg-2 col-md-4 col-6" *ngFor="let card of statsCards">
+
+          <div class="card stat-card shadow-sm">
+
+            <div class="card-body text-center">
+
+              <h6>{{ card.title }}</h6>
+
+              <h3>{{ card.value }}</h3>
+
+            </div>
+
+          </div>
 
         </div>
 
+      </div>
+
+      <!-- CHARTS SECTION -->
+      <div class="row mt-4 g-4">
+
+        <!-- STUDENTS GROWTH -->
+        <div class="col-lg-6">
+
+          <div class="card p-3 shadow-sm">
+
+            <h5>Students Growth</h5>
+
+            <canvas id="studentsChart"></canvas>
+
+          </div>
+
+        </div>
+
+        <!-- FEES COLLECTION -->
+        <div class="col-lg-6">
+
+          <div class="card p-3 shadow-sm">
+
+            <h5>Fee Collection Overview</h5>
+
+            <canvas id="feesChart"></canvas>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ATTENDANCE CHART -->
+      <div class="row mt-4">
+
+        <div class="col-12">
+
+          <div class="card p-3 shadow-sm">
+
+            <h5>Attendance Overview</h5>
+
+            <canvas id="attendanceChart"></canvas>
+
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
+
+  </div>
 
 </div>

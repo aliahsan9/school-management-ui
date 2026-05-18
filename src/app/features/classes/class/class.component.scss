@@ -1,0 +1,25 @@
+.class-page {
+  padding: 10px;
+}
+
+/* Card styling */
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+/* Inputs */
+input {
+  border-radius: 8px !important;
+}
+
+/* Table */
+.table {
+  font-size: 14px;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+  background: #f8f9fa;
+  transition: 0.2s ease-in-out;
+}

@@ -1,25 +1,31 @@
-import { Component } from '@angular/core';
-
+import { Component, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 
-import { AuthService }
-from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
-  imports:[RouterModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule
+  ],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
 
+  @Output() menuToggle = new EventEmitter<void>();
+
   constructor(
-
     private authService: AuthService,
-
     private router: Router
-
   ) { }
+
+  toggleSidebar(): void {
+    this.menuToggle.emit();
+  }
 
   logout(): void {
 

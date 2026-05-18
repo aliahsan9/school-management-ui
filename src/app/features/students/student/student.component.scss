@@ -1,0 +1,25 @@
+.student-page {
+  padding: 10px;
+}
+
+/* Card enhancement */
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+/* Form inputs polish */
+input, select, textarea {
+  border-radius: 8px !important;
+}
+
+/* Table improvements */
+.table {
+  font-size: 14px;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+  background: #f8f9fa;
+  transition: 0.2s;
+}

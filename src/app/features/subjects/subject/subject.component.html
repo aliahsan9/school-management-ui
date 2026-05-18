@@ -1,0 +1,102 @@
+<div class="container-fluid subject-page">
+
+  <div class="row g-4">
+
+    <!-- FORM -->
+    <div class="col-lg-4">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">
+          {{ isEditMode ? 'Update Subject' : 'Add Subject' }}
+        </h4>
+
+        <form [formGroup]="subjectForm" (ngSubmit)="submit()">
+
+          <input class="form-control mb-2"
+                 placeholder="Subject Name"
+                 formControlName="name">
+
+          <input type="number"
+                 class="form-control mb-2"
+                 placeholder="Class ID"
+                 formControlName="classId">
+
+          <input type="number"
+                 class="form-control mb-2"
+                 placeholder="Teacher ID"
+                 formControlName="teacherId">
+
+          <button class="btn btn-primary w-100">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button type="button"
+                  class="btn btn-secondary w-100 mt-2"
+                  (click)="reset()">
+            Reset
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="col-lg-8">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">Subjects List</h4>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-dark">
+              <tr>
+                <th>Name</th>
+                <th>Class ID</th>
+                <th>Teacher ID</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let s of subjects">
+
+                <td>{{ s.name }}</td>
+                <td>{{ s.classId }}</td>
+                <td>{{ s.teacherId }}</td>
+
+                <td>
+
+                  <button class="btn btn-sm btn-warning me-2"
+                          (click)="edit(s)">
+                    Edit
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                          (click)="delete(s.id!)">
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

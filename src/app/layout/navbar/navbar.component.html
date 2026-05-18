@@ -1,15 +1,75 @@
-<div class="navbar-custom">
+<header class="navbar-custom">
 
-    <div>
-        Dashboard
+    <!-- LEFT -->
+    <div class="navbar-left">
+
+        <!-- Mobile Hamburger -->
+        <button
+            class="menu-btn"
+            (click)="toggleSidebar()">
+
+            ☰
+
+        </button>
+
+        <div class="brand">
+
+            <h4>
+                School Management System
+            </h4>
+
+        </div>
+
     </div>
 
-    <button
-      class="btn btn-danger btn-sm"
-      (click)="logout()">
+    <!-- CENTER NAV LINKS -->
+    <nav class="navbar-links">
 
-        Logout
+        <a routerLink="/dashboard" routerLinkActive="active">
+            Dashboard
+        </a>
 
-    </button>
+        <a routerLink="/students" routerLinkActive="active">
+            Students
+        </a>
 
-</div>
+        <a routerLink="/teachers" routerLinkActive="active">
+            Teachers
+        </a>
+
+        <a routerLink="/classes" routerLinkActive="active">
+            Classes
+        </a>
+
+        <a routerLink="/subjects" routerLinkActive="active">
+            Subjects
+        </a>
+
+        <a routerLink="/attendance" routerLinkActive="active">
+            Attendance
+        </a>
+
+        <a routerLink="/fees" routerLinkActive="active">
+            Fees
+        </a>
+       
+    </nav>
+
+    <!-- RIGHT -->
+    <div class="navbar-right">
+
+        <span class="admin-name">
+            Admin
+        </span>
+
+        <button
+            class="logout-btn"
+            (click)="logout()">
+
+            Logout
+
+        </button>
+
+    </div>
+
+</header>

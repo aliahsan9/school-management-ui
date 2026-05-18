@@ -1,0 +1,21 @@
+.subject-page {
+  padding: 10px;
+}
+
+.card {
+  border-radius: 12px;
+  border: none;
+}
+
+input {
+  border-radius: 8px !important;
+}
+
+.table {
+  font-size: 14px;
+}
+
+.table tbody tr:hover {
+  background: #f8f9fa;
+  transition: 0.2s ease;
+}

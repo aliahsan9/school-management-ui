@@ -1,0 +1,101 @@
+<div class="container-fluid attendance-page">
+
+  <div class="row g-4">
+
+    <!-- MARK ATTENDANCE FORM -->
+    <div class="col-lg-4">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">Mark Attendance</h4>
+
+        <form [formGroup]="attendanceForm" (ngSubmit)="submit()">
+
+          <input class="form-control mb-2"
+                 type="number"
+                 placeholder="Student ID"
+                 formControlName="studentId">
+
+          <input class="form-control mb-2"
+                 type="date"
+                 formControlName="date">
+
+          <select class="form-select mb-2" formControlName="status">
+
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+            <option value="Late">Late</option>
+
+          </select>
+
+          <button class="btn btn-primary w-100">
+            Mark Attendance
+          </button>
+
+          <button type="button"
+                  class="btn btn-secondary w-100 mt-2"
+                  (click)="reset()">
+            Reset
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- ATTENDANCE TABLE -->
+    <div class="col-lg-8">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">Attendance Records</h4>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-dark">
+              <tr>
+                <th>Student ID</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let a of attendanceList">
+
+                <td>{{ a.studentId }}</td>
+                <td>{{ a.date | date }}</td>
+                <td>
+
+                  <span class="badge"
+                        [ngClass]="{
+                          'bg-success': a.status === 'Present',
+                          'bg-danger': a.status === 'Absent',
+                          'bg-warning text-dark': a.status === 'Late'
+                        }">
+
+                    {{ a.status }}
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,15 +1,207 @@
 .navbar-custom {
 
+    height: 70px;
+
     background: white;
 
-    padding: 15px 20px;
+    border-bottom: 1px solid #e2e8f0;
 
     display: flex;
 
+    align-items: center;
+
     justify-content: space-between;
+
+    padding: 0 20px;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+}
+
+/* LEFT */
+
+.navbar-left {
+
+    display: flex;
 
     align-items: center;
 
-    border-bottom: 1px solid #ddd;
+    gap: 15px;
+
+}
+
+.brand h4 {
+
+    margin: 0;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #0f172a;
+
+}
+
+/* HAMBURGER */
+
+.menu-btn {
+
+    display: none;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 26px;
+
+    cursor: pointer;
+
+    color: #0f172a;
+
+}
+
+/* CENTER LINKS */
+
+.navbar-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+.navbar-links a {
+
+    text-decoration: none;
+
+    color: #475569;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition: 0.2s;
+
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+}
+
+.navbar-links a:hover {
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+}
+
+.navbar-links a.active {
+
+    background: #2563eb;
+
+    color: white;
+
+}
+
+/* RIGHT */
+
+.navbar-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+}
+
+.admin-name {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #334155;
+
+}
+
+.logout-btn {
+
+    border: none;
+
+    background: #dc2626;
+
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+}
+
+.logout-btn:hover {
+
+    background: #b91c1c;
+
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 992px) {
+
+    .navbar-links {
+
+        display: none;
+
+    }
+
+    .menu-btn {
+
+        display: block;
+
+    }
+
+}
+
+@media (max-width: 576px) {
+
+    .navbar-custom {
+
+        padding: 0 12px;
+
+    }
+
+    .brand h4 {
+
+        font-size: 16px;
+
+    }
+
+    .admin-name {
+
+        display: none;
+
+    }
+
+    .logout-btn {
+
+        padding: 8px 12px;
+
+        font-size: 12px;
+
+    }
 
 }

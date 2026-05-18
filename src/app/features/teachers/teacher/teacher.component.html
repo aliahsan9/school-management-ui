@@ -1,0 +1,70 @@
+<div class="teacher-container">
+
+  <!-- FORM -->
+  <div class="form-card">
+
+    <h2>{{ isEditMode ? 'Update Teacher' : 'Add Teacher' }}</h2>
+
+    <form [formGroup]="teacherForm" (ngSubmit)="submit()">
+
+      <input type="text" placeholder="Full Name" formControlName="fullName">
+
+      <input type="email" placeholder="Email" formControlName="email">
+
+      <input type="text" placeholder="Phone Number" formControlName="phoneNumber">
+
+      <input type="text" placeholder="Qualification" formControlName="qualification">
+
+      <input type="number" placeholder="Salary" formControlName="salary">
+
+      <div class="buttons">
+        <button type="submit">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+
+        <button type="button" (click)="reset()">Reset</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+
+    <h2>Teachers List</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Qualification</th>
+          <th>Salary</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let t of teachers">
+
+          <td>{{ t.fullName }}</td>
+          <td>{{ t.email }}</td>
+          <td>{{ t.phoneNumber }}</td>
+          <td>{{ t.qualification }}</td>
+          <td>{{ t.salary }}</td>
+
+          <td>
+            <button (click)="edit(t)">Edit</button>
+            <button (click)="delete(t.id!)">Delete</button>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>

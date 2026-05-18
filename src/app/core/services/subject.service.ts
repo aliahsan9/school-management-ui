@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
-
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -16,55 +13,43 @@ export class SubjectService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {}
 
-  getAll(): Observable<Subject[]> {
-
-    return this.http.get<Subject[]>(
-      this.baseUrl
-    );
-
+  // ==============================
+  // GET ALL
+  // ==============================
+  getAll(): Observable<AcademicSubject[]> {
+    return this.http.get<AcademicSubject[]>(this.baseUrl);
   }
 
-  create(data: Subject): Observable<any> {
-
-    return this.http.post(
-      this.baseUrl,
-      data
-    );
-
+  // ==============================
+  // CREATE
+  // ==============================
+  create(data: AcademicSubject): Observable<any> {
+    return this.http.post(this.baseUrl, data);
   }
 
-  update(
-    id: number,
-    data: Subject
-  ): Observable<any> {
-
-    return this.http.put(
-      `${this.baseUrl}/${id}`,
-      data
-    );
-
+  // ==============================
+  // UPDATE
+  // ==============================
+  update(id: number, data: AcademicSubject): Observable<any> {
+    return this.http.put(`${this.baseUrl}/${id}`, data);
   }
 
+  // ==============================
+  // DELETE
+  // ==============================
   delete(id: number): Observable<any> {
-
-    return this.http.delete(
-      `${this.baseUrl}/${id}`
-    );
-
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
-
 }
 
-export interface Subject {
-
+// ==============================
+// MODEL (RENAMED - IMPORTANT)
+// ==============================
+export interface AcademicSubject {
   id?: number;
-
   name: string;
-
   classId: number;
-
   teacherId: number;
-
 }

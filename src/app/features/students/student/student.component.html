@@ -1,0 +1,123 @@
+<div class="container-fluid student-page">
+
+  <div class="row g-4">
+
+    <!-- FORM -->
+    <div class="col-lg-4">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">
+          {{ isEditMode ? 'Update Student' : 'Add Student' }}
+        </h4>
+
+        <form [formGroup]="studentForm" (ngSubmit)="submit()">
+
+          <input class="form-control mb-2"
+                 placeholder="First Name"
+                 formControlName="firstName">
+
+          <input class="form-control mb-2"
+                 placeholder="Last Name"
+                 formControlName="lastName">
+
+          <select class="form-select mb-2" formControlName="gender">
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+
+          <input type="date"
+                 class="form-control mb-2"
+                 formControlName="dateOfBirth">
+
+          <input class="form-control mb-2"
+                 placeholder="Phone Number"
+                 formControlName="phoneNumber">
+
+          <textarea class="form-control mb-2"
+                    placeholder="Address"
+                    formControlName="address"></textarea>
+
+          <input type="number"
+                 class="form-control mb-2"
+                 placeholder="Class ID"
+                 formControlName="classId">
+
+          <button class="btn btn-primary w-100">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button type="button"
+                  class="btn btn-secondary w-100 mt-2"
+                  (click)="reset()">
+            Reset
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="col-lg-8">
+
+      <div class="card shadow-sm p-3">
+
+        <h4 class="mb-3">Students List</h4>
+
+        <div class="table-responsive">
+
+          <table class="table table-hover align-middle">
+
+            <thead class="table-dark">
+              <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>DOB</th>
+                <th>Phone</th>
+                <th>Class</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr *ngFor="let s of students">
+
+                <td>{{ s.firstName }} {{ s.lastName }}</td>
+                <td>{{ s.gender }}</td>
+                <td>{{ s.dateOfBirth | date }}</td>
+                <td>{{ s.phoneNumber }}</td>
+                <td>{{ s.classId }}</td>
+
+                <td>
+
+                  <button class="btn btn-sm btn-warning me-2"
+                          (click)="edit(s)">
+                    Edit
+                  </button>
+
+                  <button class="btn btn-sm btn-danger"
+                          (click)="delete(s.id!)">
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
