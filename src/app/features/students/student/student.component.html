@@ -1,120 +1,306 @@
-<div class="container-fluid student-page">
+<div class="container py-4">
 
-  <div class="row g-4">
+  <div class="card shadow-sm mb-4">
 
-    <!-- FORM -->
-    <div class="col-lg-4">
+    <div class="card-header bg-primary text-white">
 
-      <div class="card shadow-sm p-3">
-
-        <h4 class="mb-3">
-          {{ isEditMode ? 'Update Student' : 'Add Student' }}
-        </h4>
-
-        <form [formGroup]="studentForm" (ngSubmit)="submit()">
-
-          <input class="form-control mb-2"
-                 placeholder="First Name"
-                 formControlName="firstName">
-
-          <input class="form-control mb-2"
-                 placeholder="Last Name"
-                 formControlName="lastName">
-
-          <select class="form-select mb-2" formControlName="gender">
-            <option value="">Select Gender</option>
-            <option>Male</option>
-            <option>Female</option>
-          </select>
-
-          <input type="date"
-                 class="form-control mb-2"
-                 formControlName="dateOfBirth">
-
-          <input class="form-control mb-2"
-                 placeholder="Phone Number"
-                 formControlName="phoneNumber">
-
-          <textarea class="form-control mb-2"
-                    placeholder="Address"
-                    formControlName="address"></textarea>
-
-          <input type="number"
-                 class="form-control mb-2"
-                 placeholder="Class ID"
-                 formControlName="classId">
-
-          <button class="btn btn-primary w-100">
-            {{ isEditMode ? 'Update' : 'Save' }}
-          </button>
-
-          <button type="button"
-                  class="btn btn-secondary w-100 mt-2"
-                  (click)="reset()">
-            Reset
-          </button>
-
-        </form>
-
-      </div>
+      <h4 class="mb-0">
+        {{ isEditMode ? 'Edit Student' : 'Add Student' }}
+      </h4>
 
     </div>
 
-    <!-- TABLE -->
-    <div class="col-lg-8">
+    <div class="card-body">
 
-      <div class="card shadow-sm p-3">
+      <form
+        [formGroup]="studentForm"
+        (ngSubmit)="onSubmit()">
 
-        <h4 class="mb-3">Students List</h4>
+        <div class="row">
 
-        <div class="table-responsive">
+          <div class="col-md-4 mb-3">
 
-          <table class="table table-hover align-middle">
+            <label class="form-label">
+              Admission Number
+            </label>
 
-            <thead class="table-dark">
-              <tr>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>DOB</th>
-                <th>Phone</th>
-                <th>Class</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="admissionNumber">
+          </div>
 
-            <tbody>
+          <div class="col-md-4 mb-3">
 
-              <tr *ngFor="let s of students">
+            <label class="form-label">
+              First Name
+            </label>
 
-                <td>{{ s.firstName }} {{ s.lastName }}</td>
-                <td>{{ s.gender }}</td>
-                <td>{{ s.dateOfBirth | date }}</td>
-                <td>{{ s.phoneNumber }}</td>
-                <td>{{ s.classId }}</td>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="firstName">
+          </div>
 
-                <td>
+          <div class="col-md-4 mb-3">
 
-                  <button class="btn btn-sm btn-warning me-2"
-                          (click)="edit(s)">
-                    Edit
-                  </button>
+            <label class="form-label">
+              Last Name
+            </label>
 
-                  <button class="btn btn-sm btn-danger"
-                          (click)="delete(s.id!)">
-                    Delete
-                  </button>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="lastName">
+          </div>
 
-                </td>
+          <div class="col-md-4 mb-3">
 
-              </tr>
+            <label class="form-label">
+              Gender
+            </label>
 
-            </tbody>
+            <select
+              class="form-select"
+              formControlName="gender">
 
-          </table>
+              <option [value]="0">
+                Male
+              </option>
+
+              <option [value]="1">
+                Female
+              </option>
+
+            </select>
+          </div>
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Date Of Birth
+            </label>
+
+            <input
+              type="date"
+              class="form-control"
+              formControlName="dateOfBirth">
+          </div>
+
+          <div class="col-md-4 mb-3">
+
+            <label class="form-label">
+              Admission Date
+            </label>
+
+            <input
+              type="date"
+              class="form-control"
+              formControlName="admissionDate">
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Father Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="fatherName">
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Mother Name
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="motherName">
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Phone Number
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="phoneNumber">
+          </div>
+
+          <div class="col-md-6 mb-3">
+
+            <label class="form-label">
+              Address
+            </label>
+
+            <input
+              type="text"
+              class="form-control"
+              formControlName="address">
+          </div>
+
+          <div class="col-md-3 mb-3">
+
+            <div class="form-check mt-4">
+
+              <input
+                class="form-check-input"
+                type="checkbox"
+                formControlName="isActive">
+
+              <label class="form-check-label">
+                Active
+              </label>
+
+            </div>
+
+          </div>
 
         </div>
 
-      </div>
+        <div class="d-flex gap-2">
+
+          <button
+            type="submit"
+            class="btn btn-primary">
+
+            {{
+              isEditMode
+              ? 'Update Student'
+              : 'Add Student'
+            }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="resetForm()">
+
+            Reset
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+  <div class="card shadow-sm">
+
+    <div class="card-header bg-dark text-white">
+
+      <h4 class="mb-0">
+        Students List
+      </h4>
+
+    </div>
+
+    <div class="card-body table-responsive">
+
+      <table class="table table-bordered table-hover">
+
+        <thead class="table-light">
+
+          <tr>
+
+            <th>Admission No</th>
+
+            <th>Name</th>
+
+            <th>Gender</th>
+
+            <th>Phone</th>
+
+            <th>Address</th>
+
+            <th>Status</th>
+
+            <th width="180">
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let student of students">
+
+            <td>
+              {{ student.admissionNumber }}
+            </td>
+
+            <td>
+              {{ student.firstName }}
+              {{ student.lastName }}
+            </td>
+
+            <td>
+              {{ getGenderText(student.gender) }}
+            </td>
+
+            <td>
+              {{ student.phoneNumber }}
+            </td>
+
+            <td>
+              {{ student.address }}
+            </td>
+
+            <td>
+
+              <span
+                class="badge"
+                [ngClass]="
+                  student.isActive
+                  ? 'bg-success'
+                  : 'bg-danger'
+                ">
+
+                {{
+                  student.isActive
+                  ? 'Active'
+                  : 'Inactive'
+                }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-warning btn-sm me-2"
+                (click)="editStudent(student)">
+
+                Edit
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                (click)="deleteStudent(student.id)">
+
+                Delete
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
 
     </div>
 

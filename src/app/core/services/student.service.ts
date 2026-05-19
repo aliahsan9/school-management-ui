@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import {
-  HttpClient
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
@@ -17,96 +15,66 @@ export class StudentService {
     `${environment.apiUrl}/students`;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient 
   ) { }
 
-  // ==============================
-  // GET ALL
-  // ==============================
-
-  getAll(): Observable<Student[]> {
-
-    return this.http.get<Student[]>(
-      this.baseUrl
-    );
-
+  getAllStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.baseUrl);
   }
 
-  // ==============================
-  // GET BY ID
-  // ==============================
-
-  getById(id: number): Observable<Student> {
-
+  getStudentById(id: string): Observable<Student> {
     return this.http.get<Student>(
       `${this.baseUrl}/${id}`
     );
-
   }
 
-  // ==============================
-  // CREATE
-  // ==============================
-
-  create(data: Student): Observable<any> {
-
+  createStudent(data: any): Observable<any> {
     return this.http.post(
       this.baseUrl,
       data
     );
-
   }
 
-  // ==============================
-  // UPDATE
-  // ==============================
-
-  update(
-    id: number,
-    data: Student
+  updateStudent(
+    id: string,
+    data: any
   ): Observable<any> {
-
     return this.http.put(
       `${this.baseUrl}/${id}`,
       data
     );
-
   }
 
-  // ==============================
-  // DELETE
-  // ==============================
-
-  delete(id: number): Observable<any> {
-
+  deleteStudent(id: string): Observable<any> {
     return this.http.delete(
       `${this.baseUrl}/${id}`
     );
-
   }
-
 }
-
-// ==============================
-// MODEL
-// ==============================
-
 export interface Student {
+  id: string;
 
-  id?: number;
+  admissionNumber: string;
 
   firstName: string;
 
   lastName: string;
 
-  gender: string;
+  gender: number;
 
-  dateOfBirth: Date;
+  dateOfBirth: string;
+
+  fatherName: string;
+
+  motherName: string;
 
   phoneNumber: string;
 
   address: string;
 
-  classId: number;
+  admissionDate: string;
 
+  isActive: boolean;
+
+  tenantId: string;
 }
