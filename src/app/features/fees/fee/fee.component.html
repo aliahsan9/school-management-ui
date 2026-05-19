@@ -7,16 +7,19 @@
 
       <div class="card shadow-sm p-3">
 
-        <h4 class="mb-3">
-          {{ isEditMode ? 'Update Fee' : 'Add Fee' }}
-        </h4>
+        <h4 class="mb-3">Add Fee</h4>
 
         <form [formGroup]="feeForm" (ngSubmit)="submit()">
 
           <input class="form-control mb-2"
-                 type="number"
+                 type="text"
                  placeholder="Student ID"
                  formControlName="studentId">
+
+          <input class="form-control mb-2"
+                 type="text"
+                 placeholder="Title"
+                 formControlName="title">
 
           <input class="form-control mb-2"
                  type="number"
@@ -27,23 +30,8 @@
                  type="date"
                  formControlName="dueDate">
 
-          <select class="form-select mb-2"
-                  formControlName="status">
-
-            <option value="Pending">Pending</option>
-            <option value="Paid">Paid</option>
-            <option value="Overdue">Overdue</option>
-
-          </select>
-
           <button class="btn btn-primary w-100">
-            {{ isEditMode ? 'Update' : 'Save' }}
-          </button>
-
-          <button type="button"
-                  class="btn btn-secondary w-100 mt-2"
-                  (click)="reset()">
-            Reset
+            Save Fee
           </button>
 
         </form>
@@ -65,11 +53,13 @@
 
             <thead class="table-dark">
               <tr>
-                <th>Student ID</th>
+                <th>Student</th>
+                <th>Title</th>
                 <th>Amount</th>
-                <th>Due Date</th>
+                <th>Paid</th>
+                <th>Remaining</th>
                 <th>Status</th>
-                <th>Actions</th>
+                <th>Due Date</th>
               </tr>
             </thead>
 
@@ -77,34 +67,24 @@
 
               <tr *ngFor="let f of fees">
 
-                <td>{{ f.studentId }}</td>
+                <td>{{ f.studentName }}</td>
+                <td>{{ f.title }}</td>
                 <td>{{ f.amount }}</td>
-                <td>{{ f.dueDate | date }}</td>
+                <td>{{ f.paidAmount }}</td>
+                <td>{{ f.remainingAmount }}</td>
 
                 <td>
                   <span class="badge"
                         [ngClass]="{
                           'bg-success': f.status === 'Paid',
                           'bg-warning text-dark': f.status === 'Pending',
-                          'bg-danger': f.status === 'Overdue'
+                          'bg-danger': f.status === 'Partial'
                         }">
                     {{ f.status }}
                   </span>
                 </td>
 
-                <td>
-
-                  <button class="btn btn-sm btn-warning me-2"
-                          (click)="edit(f)">
-                    Edit
-                  </button>
-
-                  <button class="btn btn-sm btn-danger"
-                          (click)="delete(f.id!)">
-                    Delete
-                  </button>
-
-                </td>
+                <td>{{ f.dueDate | date }}</td>
 
               </tr>
 

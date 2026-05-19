@@ -1,10 +1,6 @@
-
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs';
-
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -12,62 +8,40 @@ import { environment } from '../../../environments/environment';
 })
 export class FeeService {
 
-  private readonly baseUrl =
-    `${environment.apiUrl}/fees`;
+  private readonly baseUrl = `${environment.apiUrl}/fees`;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Fee[]> {
-
-    return this.http.get<Fee[]>(
-      this.baseUrl
-    );
-
+  getAll(): Observable<FeeResponse[]> {
+    return this.http.get<FeeResponse[]>(this.baseUrl);
   }
 
-  create(data: Fee): Observable<any> {
-
-    return this.http.post(
-      this.baseUrl,
-      data
-    );
-
+  create(data: CreateFee): Observable<any> {
+    return this.http.post(this.baseUrl, data);
   }
 
-  update(
-    id: number,
-    data: Fee
-  ): Observable<any> {
-
-    return this.http.put(
-      `${this.baseUrl}/${id}`,
-      data
-    );
-
+  getById(id: string): Observable<FeeResponse> {
+    return this.http.get<FeeResponse>(`${this.baseUrl}/${id}`);
   }
-
-  delete(id: number): Observable<any> {
-
-    return this.http.delete(
-      `${this.baseUrl}/${id}`
-    );
-
-  }
-
 }
 
-export interface Fee {
+/* ================= DTOs ================= */
 
-  id?: number;
-
-  studentId: number;
-
+export interface CreateFee {
+  studentId: string;
+  title: string;
   amount: number;
+  dueDate: string;
+}
 
-  dueDate: Date;
-
+export interface FeeResponse {
+  id: string;
+  studentId: string;
+  studentName: string;
+  title: string;
+  amount: number;
+  paidAmount: number;
+  remainingAmount: number;
   status: string;
-
+  dueDate: string;
 }

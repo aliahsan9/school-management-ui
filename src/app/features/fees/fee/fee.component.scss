@@ -1,31 +1,28 @@
 .fee-page {
-  padding: 10px;
+  padding: 12px;
 }
 
-/* Card style */
 .card {
   border-radius: 12px;
   border: none;
+  background: #fff;
 }
 
-/* Inputs */
-input, select {
+input {
   border-radius: 8px !important;
 }
 
-/* Table */
 .table {
   font-size: 14px;
 }
 
-/* Hover effect */
 .table tbody tr:hover {
   background: #f8f9fa;
   transition: 0.2s ease;
 }
 
-/* Badge */
 .badge {
   padding: 6px 10px;
   border-radius: 8px;
+  font-size: 12px;
 }
