@@ -1,87 +1,76 @@
-<div class="dashboard-layout">
+<div class="container-fluid dashboard-layout">
 
-  <div class="main-wrapper">
+  <!-- TOP BAR -->
+  <div class="row topbar align-items-center mb-3">
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <div class="title">School ERP Dashboard</div>
-
-      <div class="actions">
-        <button class="btn btn-sm btn-outline-primary" (click)="loadDashboard()">
-          Refresh Data
-        </button>
-      </div>
+    <div class="col-12 col-md-6">
+      <h5 class="m-0 fw-bold">School ERP Dashboard</h5>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
+    <div class="col-12 col-md-6 text-md-end mt-2 mt-md-0">
 
-      <!-- KPI CARDS -->
-      <div class="row g-4">
+      <button class="btn btn-sm btn-outline-primary"
+              (click)="loadDashboard()">
+        Refresh Data
+      </button>
 
-        <div class="col-lg-2 col-md-4 col-6" *ngFor="let card of statsCards">
+    </div>
 
-          <div class="card stat-card shadow-sm">
+  </div>
 
-            <div class="card-body text-center">
+  <!-- KPI CARDS -->
+  <div class="row g-3">
 
-              <h6>{{ card.title }}</h6>
+    <div class="col-6 col-md-4 col-lg-2"
+         *ngFor="let card of statsCards">
 
-              <h3>{{ card.value }}</h3>
+      <div class="card stat-card shadow-sm text-center p-3">
 
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- CHARTS SECTION -->
-      <div class="row mt-4 g-4">
-
-        <!-- STUDENTS GROWTH -->
-        <div class="col-lg-6">
-
-          <div class="card p-3 shadow-sm">
-
-            <h5>Students Growth</h5>
-
-            <canvas id="studentsChart"></canvas>
-
-          </div>
-
-        </div>
-
-        <!-- FEES COLLECTION -->
-        <div class="col-lg-6">
-
-          <div class="card p-3 shadow-sm">
-
-            <h5>Fee Collection Overview</h5>
-
-            <canvas id="feesChart"></canvas>
-
-          </div>
-
-        </div>
+        <h6 class="text-muted">{{ card.title }}</h6>
+        <h4 class="fw-bold">{{ card.value }}</h4>
 
       </div>
 
-      <!-- ATTENDANCE CHART -->
-      <div class="row mt-4">
+    </div>
 
-        <div class="col-12">
+  </div>
 
-          <div class="card p-3 shadow-sm">
+  <!-- CHARTS -->
+  <div class="row g-4 mt-2">
 
-            <h5>Attendance Overview</h5>
+    <div class="col-12 col-lg-6">
 
-            <canvas id="attendanceChart"></canvas>
+      <div class="card p-3 shadow-sm">
 
-          </div>
+        <h6 class="mb-3">Students Growth</h6>
+        <canvas id="studentsChart"></canvas>
 
-        </div>
+      </div>
+
+    </div>
+
+    <div class="col-12 col-lg-6">
+
+      <div class="card p-3 shadow-sm">
+
+        <h6 class="mb-3">Fee Collection</h6>
+        <canvas id="feesChart"></canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ATTENDANCE -->
+  <div class="row g-4 mt-2">
+
+    <div class="col-12">
+
+      <div class="card p-3 shadow-sm">
+
+        <h6 class="mb-3">Attendance Overview</h6>
+        <canvas id="attendanceChart"></canvas>
 
       </div>
 

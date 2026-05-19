@@ -1,48 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
 import { RouterModule } from '@angular/router';
 
-import {
-  Chart,
-  registerables
-} from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 
 import {
   Student,
   StudentService
 } from '../../core/services/student.service';
 
-import { TeacherService }
-from '../../core/services/teacher.service';
-
-import { ClassService }
-from '../../core/services/class.service';
-
-import { SubjectService }
-from '../../core/services/subject.service';
-
-import { AttendanceService }
-from '../../core/services/attendance.service';
-
-import { FeeService }
-from '../../core/services/fee.service';
+import { TeacherService } from '../../core/services/teacher.service';
+import { ClassService } from '../../core/services/class.service';
+import { SubjectService } from '../../core/services/subject.service';
+import { AttendanceService } from '../../core/services/attendance.service';
+import { FeeService } from '../../core/services/fee.service';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-layout',
-
   standalone: true,
-
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
-
+  imports: [CommonModule, RouterModule],
   templateUrl: './dashboard-layout.component.html',
-
   styleUrls: ['./dashboard-layout.component.scss']
 })
 export class DashboardLayoutComponent implements OnInit {
@@ -50,10 +29,11 @@ export class DashboardLayoutComponent implements OnInit {
   statsCards: any[] = [];
 
   students: Student[] = [];
-
   fees: any[] = [];
-
   attendance: any[] = [];
+
+  // ⚠️ use a real studentId later (from login/session)
+  private demoStudentId: string | null = null;
 
   constructor(
     private studentService: StudentService,
@@ -69,97 +49,88 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   loadDashboard(): void {
-
     this.statsCards = [];
 
-    // =========================
+    // =====================
     // STUDENTS
-    // =========================
-    this.studentService
-      .getAllStudents()
-      .subscribe({
-        next: (res: Student[]) => {
+    // =====================
+    this.studentService.getAllStudents().subscribe({
+      next: (res: Student[]) => {
+        this.students = res;
 
-          this.students = res;
+        this.statsCards.push({
+          title: 'Students',
+          value: res.length
+        });
 
-          this.statsCards.push({
-            title: 'Students',
-            value: res.length
-          });
+        this.renderStudentsChart();
+      },
+      error: (err: any) => {
+        console.error('Student error:', err);
+      }
+    });
 
-          this.renderStudentsChart();
-        },
-
-        error: (err: any) => {
-          console.error('Student error:', err);
-        }
-      });
-
-    // =========================
+    // =====================
     // TEACHERS
-    // =========================
-    this.teacherService
-      .getAll()
-      .subscribe({
-        next: (res: any[]) => {
+    // =====================
+    this.teacherService.getAll().subscribe({
+      next: (res: any[]) => {
+        this.statsCards.push({
+          title: 'Teachers',
+          value: res.length
+        });
+      },
+      error: (err: any) => {
+        console.error('Teacher error:', err);
+      }
+    });
 
-          this.statsCards.push({
-            title: 'Teachers',
-            value: res.length
-          });
-        },
-
-        error: (err: any) => {
-          console.error('Teacher error:', err);
-        }
-      });
-
-    // =========================
+    // =====================
     // CLASSES
-    // =========================
-    this.classService
-      .getAll()
-      .subscribe({
-        next: (res: any[]) => {
+    // =====================
+    this.classService.getAll().subscribe({
+      next: (res: any[]) => {
+        this.statsCards.push({
+          title: 'Classes',
+          value: res.length
+        });
+      },
+      error: (err: any) => {
+        console.error('Class error:', err);
+      }
+    });
 
-          this.statsCards.push({
-            title: 'Classes',
-            value: res.length
-          });
-        },
-
-        error: (err: any) => {
-          console.error('Class error:', err);
-        }
-      });
-
-    // =========================
+    // =====================
     // SUBJECTS
-    // =========================
-    this.subjectService
-      .getAll()
-      .subscribe({
-        next: (res: any[]) => {
+    // =====================
+    this.subjectService.getAll().subscribe({
+      next: (res: any[]) => {
+        this.statsCards.push({
+          title: 'Subjects',
+          value: res.length
+        });
+      },
+      error: (err: any) => {
+        console.error('Subject error:', err);
+      }
+    });
 
-          this.statsCards.push({
-            title: 'Subjects',
-            value: res.length
-          });
-        },
+    // =====================
+    // ATTENDANCE (FIXED)
+    // =====================
+    if (!this.demoStudentId) {
+      // fallback: skip API to avoid 400 error
+      this.attendance = [];
 
-        error: (err: any) => {
-          console.error('Subject error:', err);
-        }
+      this.statsCards.push({
+        title: 'Attendance',
+        value: 0
       });
 
-    // =========================
-    // ATTENDANCE (FIXED)
-    // =========================
-    this.attendanceService
-      .getStudentAttendance('dummy-id')
-      .subscribe({
+      this.renderAttendanceChart();
+    } else {
+      this.attendanceService.getStudentAttendance(this.demoStudentId).subscribe({
         next: (res: any[]) => {
-
           this.attendance = res;
 
           this.statsCards.push({
@@ -169,164 +140,87 @@ export class DashboardLayoutComponent implements OnInit {
 
           this.renderAttendanceChart();
         },
-
         error: (err: any) => {
           console.error('Attendance error:', err);
         }
       });
+    }
 
-    // =========================
+    // =====================
     // FEES
-    // =========================
-    this.feeService
-      .getAll()
-      .subscribe({
-        next: (res: any[]) => {
+    // =====================
+    this.feeService.getAll().subscribe({
+      next: (res: any[]) => {
+        this.fees = res;
 
-          this.fees = res;
+        const paid = res.filter(f => f.status === 'Paid').length;
+        const pending = res.filter(f => f.status === 'Pending').length;
 
-          const paid = res.filter(
-            (f: any) => f.status === 'Paid'
-          ).length;
+        this.statsCards.push({ title: 'Fees Paid', value: paid });
+        this.statsCards.push({ title: 'Pending Fees', value: pending });
 
-          const pending = res.filter(
-            (f: any) => f.status === 'Pending'
-          ).length;
-
-          this.statsCards.push({
-            title: 'Fees Paid',
-            value: paid
-          });
-
-          this.statsCards.push({
-            title: 'Pending Fees',
-            value: pending
-          });
-
-          this.renderFeesChart(paid, pending);
-        },
-
-        error: (err: any) => {
-          console.error('Fee error:', err);
-        }
-      });
+        this.renderFeesChart(paid, pending);
+      },
+      error: (err: any) => {
+        console.error('Fee error:', err);
+      }
+    });
   }
 
-  // =========================
-  // STUDENTS CHART
-  // =========================
+  // =====================
+  // CHARTS
+  // =====================
   renderStudentsChart(): void {
-
-    const existing =
-      Chart.getChart('studentsChart');
-
+    const existing = Chart.getChart('studentsChart');
     if (existing) existing.destroy();
 
     new Chart('studentsChart', {
-
       type: 'line',
-
       data: {
-
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-
         datasets: [{
           label: 'Students Growth',
-
-          data: [
-            10,
-            20,
-            35,
-            50,
-            this.students.length
-          ],
-
+          data: [10, 20, 35, 50, this.students.length],
           borderColor: '#0d6efd',
-
           backgroundColor: 'rgba(13,110,253,0.2)',
-
           fill: true
         }]
       }
     });
   }
 
-  // =========================
-  // FEES CHART
-  // =========================
-  renderFeesChart(
-    paid: number,
-    pending: number
-  ): void {
-
-    const existing =
-      Chart.getChart('feesChart');
-
+  renderFeesChart(paid: number, pending: number): void {
+    const existing = Chart.getChart('feesChart');
     if (existing) existing.destroy();
 
     new Chart('feesChart', {
-
       type: 'doughnut',
-
       data: {
-
         labels: ['Paid', 'Pending'],
-
         datasets: [{
           data: [paid, pending],
-
-          backgroundColor: [
-            '#28a745',
-            '#ffc107'
-          ]
+          backgroundColor: ['#28a745', '#ffc107']
         }]
       }
     });
   }
 
-  // =========================
-  // ATTENDANCE CHART
-  // =========================
   renderAttendanceChart(): void {
-
-    const existing =
-      Chart.getChart('attendanceChart');
-
+    const existing = Chart.getChart('attendanceChart');
     if (existing) existing.destroy();
 
-    const present =
-      this.attendance.filter(
-        (a: any) => a.status === 'Present'
-      ).length;
-
-    const absent =
-      this.attendance.filter(
-        (a: any) => a.status === 'Absent'
-      ).length;
-
-    const late =
-      this.attendance.filter(
-        (a: any) => a.status === 'Late'
-      ).length;
+    const present = this.attendance.filter(a => a.status === 'Present').length;
+    const absent = this.attendance.filter(a => a.status === 'Absent').length;
+    const late = this.attendance.filter(a => a.status === 'Late').length;
 
     new Chart('attendanceChart', {
-
       type: 'bar',
-
       data: {
-
         labels: ['Present', 'Absent', 'Late'],
-
         datasets: [{
           label: 'Attendance Overview',
-
           data: [present, absent, late],
-
-          backgroundColor: [
-            '#28a745',
-            '#dc3545',
-            '#ffc107'
-          ]
+          backgroundColor: ['#28a745', '#dc3545', '#ffc107']
         }]
       }
     });
