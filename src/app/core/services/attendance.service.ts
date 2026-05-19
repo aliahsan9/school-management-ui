@@ -18,20 +18,36 @@ export class AttendanceService {
     private http: HttpClient
   ) { }
 
-  getAll(): Observable<Attendance[]> {
+  // GET CLASS ATTENDANCE
+  getClassAttendance(
+    classId: string,
+    date: string
+  ): Observable<AttendanceResponse[]> {
 
-    return this.http.get<Attendance[]>(
-      this.baseUrl
+    return this.http.get<AttendanceResponse[]>(
+      `${this.baseUrl}/class?classId=${classId}&date=${date}`
     );
 
   }
 
+  // GET STUDENT ATTENDANCE
+  getStudentAttendance(
+    studentId: string
+  ): Observable<AttendanceResponse[]> {
+
+    return this.http.get<AttendanceResponse[]>(
+      `${this.baseUrl}/student/${studentId}`
+    );
+
+  }
+
+  // MARK ATTENDANCE
   markAttendance(
-    data: Attendance
+    data: MarkAttendanceDto
   ): Observable<any> {
 
     return this.http.post(
-      this.baseUrl,
+      `${this.baseUrl}/mark`,
       data
     );
 
@@ -39,14 +55,36 @@ export class AttendanceService {
 
 }
 
-export interface Attendance {
+// ============================
+// DTOs
+// ============================
 
-  id?: number;
+export interface AttendanceResponse {
 
-  studentId: number;
+  studentId: string;
 
-  date: Date;
+  studentName: string;
 
   status: string;
+
+  date: string;
+
+}
+
+export interface StudentAttendanceDto {
+
+  studentId: string;
+
+  status: number;
+
+}
+
+export interface MarkAttendanceDto {
+
+  classId: string;
+
+  date: string;
+
+  students: StudentAttendanceDto[];
 
 }
