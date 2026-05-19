@@ -41,15 +41,11 @@ Chart.register(...registerables);
     RouterModule
   ],
 
-  templateUrl:
-    './dashboard-layout.component.html',
+  templateUrl: './dashboard-layout.component.html',
 
-  styleUrls: [
-    './dashboard-layout.component.scss'
-  ]
+  styleUrls: ['./dashboard-layout.component.scss']
 })
-export class DashboardLayoutComponent
-implements OnInit {
+export class DashboardLayoutComponent implements OnInit {
 
   statsCards: any[] = [];
 
@@ -61,17 +57,12 @@ implements OnInit {
 
   constructor(
     private studentService: StudentService,
-
     private teacherService: TeacherService,
-
     private classService: ClassService,
-
     private subjectService: SubjectService,
-
     private attendanceService: AttendanceService,
-
     private feeService: FeeService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -87,7 +78,6 @@ implements OnInit {
     this.studentService
       .getAllStudents()
       .subscribe({
-
         next: (res: Student[]) => {
 
           this.students = res;
@@ -100,8 +90,8 @@ implements OnInit {
           this.renderStudentsChart();
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Student error:', err);
         }
       });
 
@@ -111,7 +101,6 @@ implements OnInit {
     this.teacherService
       .getAll()
       .subscribe({
-
         next: (res: any[]) => {
 
           this.statsCards.push({
@@ -120,8 +109,8 @@ implements OnInit {
           });
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Teacher error:', err);
         }
       });
 
@@ -131,7 +120,6 @@ implements OnInit {
     this.classService
       .getAll()
       .subscribe({
-
         next: (res: any[]) => {
 
           this.statsCards.push({
@@ -140,8 +128,8 @@ implements OnInit {
           });
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Class error:', err);
         }
       });
 
@@ -151,7 +139,6 @@ implements OnInit {
     this.subjectService
       .getAll()
       .subscribe({
-
         next: (res: any[]) => {
 
           this.statsCards.push({
@@ -160,18 +147,17 @@ implements OnInit {
           });
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Subject error:', err);
         }
       });
 
     // =========================
-    // ATTENDANCE
+    // ATTENDANCE (FIXED)
     // =========================
     this.attendanceService
-      .getAll()
+      .getStudentAttendance('dummy-id')
       .subscribe({
-
         next: (res: any[]) => {
 
           this.attendance = res;
@@ -184,8 +170,8 @@ implements OnInit {
           this.renderAttendanceChart();
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Attendance error:', err);
         }
       });
 
@@ -195,20 +181,17 @@ implements OnInit {
     this.feeService
       .getAll()
       .subscribe({
-
         next: (res: any[]) => {
 
           this.fees = res;
 
-          const paid =
-            res.filter(
-              (f: any) => f.status === 'Paid'
-            ).length;
+          const paid = res.filter(
+            (f: any) => f.status === 'Paid'
+          ).length;
 
-          const pending =
-            res.filter(
-              (f: any) => f.status === 'Pending'
-            ).length;
+          const pending = res.filter(
+            (f: any) => f.status === 'Pending'
+          ).length;
 
           this.statsCards.push({
             title: 'Fees Paid',
@@ -220,14 +203,11 @@ implements OnInit {
             value: pending
           });
 
-          this.renderFeesChart(
-            paid,
-            pending
-          );
+          this.renderFeesChart(paid, pending);
         },
 
-        error: (err) => {
-          console.error(err);
+        error: (err: any) => {
+          console.error('Fee error:', err);
         }
       });
   }
@@ -237,12 +217,10 @@ implements OnInit {
   // =========================
   renderStudentsChart(): void {
 
-    const existingChart =
+    const existing =
       Chart.getChart('studentsChart');
 
-    if (existingChart) {
-      existingChart.destroy();
-    }
+    if (existing) existing.destroy();
 
     new Chart('studentsChart', {
 
@@ -250,34 +228,25 @@ implements OnInit {
 
       data: {
 
-        labels: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May'
-        ],
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
 
-        datasets: [
-          {
-            label: 'Students Growth',
+        datasets: [{
+          label: 'Students Growth',
 
-            data: [
-              10,
-              20,
-              35,
-              50,
-              this.students.length
-            ],
+          data: [
+            10,
+            20,
+            35,
+            50,
+            this.students.length
+          ],
 
-            borderColor: '#0d6efd',
+          borderColor: '#0d6efd',
 
-            backgroundColor:
-              'rgba(13,110,253,0.2)',
+          backgroundColor: 'rgba(13,110,253,0.2)',
 
-            fill: true
-          }
-        ]
+          fill: true
+        }]
       }
     });
   }
@@ -290,12 +259,10 @@ implements OnInit {
     pending: number
   ): void {
 
-    const existingChart =
+    const existing =
       Chart.getChart('feesChart');
 
-    if (existingChart) {
-      existingChart.destroy();
-    }
+    if (existing) existing.destroy();
 
     new Chart('feesChart', {
 
@@ -303,24 +270,16 @@ implements OnInit {
 
       data: {
 
-        labels: [
-          'Paid',
-          'Pending'
-        ],
+        labels: ['Paid', 'Pending'],
 
-        datasets: [
-          {
-            data: [
-              paid,
-              pending
-            ],
+        datasets: [{
+          data: [paid, pending],
 
-            backgroundColor: [
-              '#28a745',
-              '#ffc107'
-            ]
-          }
-        ]
+          backgroundColor: [
+            '#28a745',
+            '#ffc107'
+          ]
+        }]
       }
     });
   }
@@ -330,12 +289,10 @@ implements OnInit {
   // =========================
   renderAttendanceChart(): void {
 
-    const existingChart =
+    const existing =
       Chart.getChart('attendanceChart');
 
-    if (existingChart) {
-      existingChart.destroy();
-    }
+    if (existing) existing.destroy();
 
     const present =
       this.attendance.filter(
@@ -358,30 +315,19 @@ implements OnInit {
 
       data: {
 
-        labels: [
-          'Present',
-          'Absent',
-          'Late'
-        ],
+        labels: ['Present', 'Absent', 'Late'],
 
-        datasets: [
-          {
-            label:
-              'Attendance Overview',
+        datasets: [{
+          label: 'Attendance Overview',
 
-            data: [
-              present,
-              absent,
-              late
-            ],
+          data: [present, absent, late],
 
-            backgroundColor: [
-              '#28a745',
-              '#dc3545',
-              '#ffc107'
-            ]
-          }
-        ]
+          backgroundColor: [
+            '#28a745',
+            '#dc3545',
+            '#ffc107'
+          ]
+        }]
       }
     });
   }

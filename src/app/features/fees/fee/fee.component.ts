@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Fee, FeeService } from '../../../core/services/fee.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
+import { FeeService, FeeResponse, CreateFee } from '../../../core/services/fee.service';
 
 @Component({
   selector: 'app-fee',
@@ -13,11 +14,8 @@ import { RouterModule } from '@angular/router';
 })
 export class FeeComponent implements OnInit {
 
-  fees: Fee[] = [];
+  fees: FeeResponse[] = [];
   feeForm!: FormGroup;
-
-  isEditMode = false;
-  selectedId: number | null = null;
 
   constructor(
     private feeService: FeeService,
@@ -32,60 +30,32 @@ export class FeeComponent implements OnInit {
   initForm() {
     this.feeForm = this.fb.group({
       studentId: ['', Validators.required],
+      title: ['', Validators.required],
       amount: ['', Validators.required],
-      dueDate: ['', Validators.required],
-      status: ['Pending', Validators.required]
+      dueDate: ['', Validators.required]
     });
   }
 
   loadFees() {
-    this.feeService.getAll().subscribe(res => {
-      this.fees = res;
+    this.feeService.getAll().subscribe({
+      next: (res) => this.fees = res,
+      error: (err) => console.error(err)
     });
   }
 
   submit() {
-    const data: Fee = this.feeForm.value;
+    const data: CreateFee = this.feeForm.value;
 
-    if (this.isEditMode && this.selectedId !== null) {
-      this.feeService.update(this.selectedId, data).subscribe(() => {
+    this.feeService.create(data).subscribe({
+      next: () => {
         this.reset();
         this.loadFees();
-      });
-    } else {
-      this.feeService.create(data).subscribe(() => {
-        this.reset();
-        this.loadFees();
-      });
-    }
-  }
-
-  edit(fee: Fee) {
-    this.isEditMode = true;
-    this.selectedId = fee.id!;
-
-    this.feeForm.patchValue({
-      studentId: fee.studentId,
-      amount: fee.amount,
-      dueDate: fee.dueDate,
-      status: fee.status
+      },
+      error: (err) => console.error(err)
     });
-  }
-
-  delete(id: number) {
-    if (confirm('Are you sure you want to delete this fee record?')) {
-      this.feeService.delete(id).subscribe(() => {
-        this.loadFees();
-      });
-    }
   }
 
   reset() {
-    this.feeForm.reset({
-      status: 'Pending'
-    });
-
-    this.isEditMode = false;
-    this.selectedId = null;
+    this.feeForm.reset();
   }
 }
