@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import {
   FormBuilder,
   FormGroup,
@@ -10,30 +9,24 @@ import {
 import {
   AttendanceService,
   AttendanceResponse,
-  MarkAttendanceDto
+  MarkAttendanceDto,
+  StudentAttendanceDto
 } from '../../../core/services/attendance.service';
 
 import { CommonModule } from '@angular/common';
-
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-attendance',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule],
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.scss']
 })
 export class AttendanceComponent implements OnInit {
 
   attendanceList: AttendanceResponse[] = [];
-
   attendanceForm!: FormGroup;
-
   loading = false;
 
   constructor(
@@ -42,29 +35,22 @@ export class AttendanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.initForm();
-
   }
 
   initForm(): void {
-
     this.attendanceForm = this.fb.group({
-
       classId: ['', Validators.required],
-
       studentId: ['', Validators.required],
-
       date: ['', Validators.required],
-
       status: [0, Validators.required]
-
     });
-
   }
 
+  // ============================
+  // SUBMIT
+  // ============================
   submit(): void {
-
     if (this.attendanceForm.invalid) {
       this.attendanceForm.markAllAsTouched();
       return;
@@ -72,89 +58,59 @@ export class AttendanceComponent implements OnInit {
 
     this.loading = true;
 
-    const formValue = this.attendanceForm.value;
+    const form = this.attendanceForm.value;
 
-    const payload: MarkAttendanceDto = {
-
-      classId: formValue.classId,
-
-      date: formValue.date,
-
-      students: [
-        {
-          studentId: formValue.studentId,
-          status: Number(formValue.status)
-        }
-      ]
-
+    const student: StudentAttendanceDto = {
+      studentId: form.studentId,
+      status: Number(form.status)
     };
 
-    this.attendanceService
-      .markAttendance(payload)
-      .subscribe({
+    const payload: MarkAttendanceDto = {
+      classId: form.classId,
+      date: form.date,
+      students: [student]
+    };
 
+    this.attendanceService.markAttendance(payload)
+      .subscribe({
         next: () => {
-
           this.loadAttendance();
-
           this.reset();
-
           this.loading = false;
-
         },
-
         error: (err) => {
-
-          console.error(err);
-
+          console.error('Attendance Error:', err);
           this.loading = false;
-
         }
-
       });
-
   }
 
+  // ============================
+  // LOAD
+  // ============================
   loadAttendance(): void {
+    const classId = this.attendanceForm.get('classId')?.value;
+    const date = this.attendanceForm.get('date')?.value;
 
-    const classId =
-      this.attendanceForm.get('classId')?.value;
+    if (!classId || !date) return;
 
-    const date =
-      this.attendanceForm.get('date')?.value;
-
-    if (!classId || !date) {
-      return;
-    }
-
-    this.attendanceService
-      .getClassAttendance(classId, date)
+    this.attendanceService.getClassAttendance(classId, date)
       .subscribe({
-
-        next: (res: AttendanceResponse[]) => {
-
+        next: (res) => {
           this.attendanceList = res;
-
         },
-
         error: (err) => {
-
           console.error(err);
-
         }
-
       });
-
   }
 
+  // ============================
+  // RESET
+  // ============================
   reset(): void {
-
     this.attendanceForm.reset({
-
       status: 0
-
     });
-
   }
-
-}
+} 
