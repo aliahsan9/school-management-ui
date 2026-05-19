@@ -1,31 +1,168 @@
 .attendance-page {
-  padding: 10px;
+
+  padding: 20px;
+
+  .card {
+
+    border: none;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background: #ffffff;
+
+    transition: 0.3s ease;
+
+    &:hover {
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+    }
+
+  }
+
+  h4 {
+
+    font-weight: 600;
+
+    color: #2c3e50;
+
+  }
+
+  .form-control,
+  .form-select {
+
+    height: 48px;
+
+    border-radius: 10px;
+
+    border: 1px solid #dcdfe4;
+
+    font-size: 14px;
+
+    &:focus {
+
+      border-color: #0d6efd;
+
+      box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, 0.15);
+
+    }
+
+  }
+
+  button {
+
+    height: 45px;
+
+    border-radius: 10px;
+
+    font-weight: 500;
+
+    transition: 0.2s ease;
+
+    &:hover {
+
+      transform: translateY(-1px);
+
+    }
+
+  }
+
+  .table {
+
+    margin-bottom: 0;
+
+    thead {
+
+      th {
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        border: none;
+
+        padding: 14px;
+
+      }
+
+    }
+
+    tbody {
+
+      tr {
+
+        transition: background 0.2s ease;
+
+        &:hover {
+
+          background: #f8f9fa;
+
+        }
+
+      }
+
+      td {
+
+        vertical-align: middle;
+
+        padding: 14px;
+
+        font-size: 14px;
+
+      }
+
+    }
+
+  }
+
+  .badge {
+
+    padding: 8px 12px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    min-width: 80px;
+
+    text-align: center;
+
+  }
+
 }
 
-/* Card styling */
-.card {
-  border-radius: 12px;
-  border: none;
-}
+/* MOBILE */
 
-/* Inputs */
-input, select {
-  border-radius: 8px !important;
-}
+@media (max-width: 768px) {
 
-/* Table */
-.table {
-  font-size: 14px;
-}
+  .attendance-page {
 
-/* Hover effect */
-.table tbody tr:hover {
-  background: #f8f9fa;
-  transition: 0.2s ease;
-}
+    padding: 10px;
 
-/* Badge spacing */
-.badge {
-  padding: 6px 10px;
-  border-radius: 8px;
+    .card {
+
+      padding: 15px !important;
+
+    }
+
+    h4 {
+
+      font-size: 18px;
+
+    }
+
+    .table {
+
+      font-size: 13px;
+
+    }
+
+  }
+
 }
